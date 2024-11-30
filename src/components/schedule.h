@@ -12,6 +12,8 @@ typedef struct {
   bool btn_prev_week;
   int current_week;
   int current_month_days;
+  int current_month;
+  int current_year;
   int start_day;
 } Schedule;
 
@@ -26,3 +28,6 @@ void update_schedule(Schedule *schedule);
 void advance_week(Schedule *schedule);
 void previous_week(Schedule *schedule);
 void update_calendar_view(Schedule *schedule);
+
+void save_reservations(const char *filename, Schedule *schedule);
+void load_reservations(const char *filename, Schedule *schedule);

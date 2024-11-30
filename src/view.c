@@ -23,7 +23,12 @@ void view_init(View *view) {
       .width = 1340 - (view->schd.calendar.size.x),
       .height = 448,
   };
-  int font_size = 25;
+
+  // Cargar reservaciones desde el archivo
+  load_reservations("reservations.txt", &view->schd);
+
+  // Actualizar el calendario con las reservaciones cargadas
+  update_calendar_view(&view->schd);
 }
 
 void view_draw(View *view, Font fonts[NUM_FONTS]) {
@@ -136,13 +141,11 @@ void view_update(View *view) {
 
   // Verificar si se presionó el botón "Reservar"
   if (view->btn_send_client_form) {
-    // Obtener los datos del formulario
     char *name = view->cf_data.name;
     char *email = view->cf_data.email;
     char *phone = view->cf_data.phone;
     char *id = view->cf_data.id;
 
-    // Valida que el formulario esté completo
     if (strlen(name) == 0 || strlen(email) == 0 || strlen(phone) == 0 ||
         strlen(id) == 0) {
       printf("Error: Todos los campos del formulario son obligatorios.\n");
@@ -150,25 +153,25 @@ void view_update(View *view) {
       return;
     }
 
-    // Encuentra la celda seleccionada en el calendario
     Cell *selected_cell = view->schd.calendar.currented_selected_cell;
     if (selected_cell && selected_cell->is_available) {
-      // Realiza la reserva
       if (view->schd.calendar.reservation_count < MAX_RESERVATIONS) {
         view->schd.calendar
             .reservations[view->schd.calendar.reservation_count++] =
             (Reservation){.day = selected_cell->date.day,
-                          .week = view->schd.current_week,
+                          .month = view->schd.current_month,
                           .employee = selected_cell->employee,
                           .client_name = strdup(name)};
 
-        // Actualiza la celda seleccionada en el calendario
         selected_cell->is_available = false;
-        selected_cell->current_color = ERRC; // Marca como no disponible
+        selected_cell->current_color = ERRC;
         add_grid_content(selected_cell, strdup("Reservado"), 25, 0, GRAY);
 
-        printf("Reserva realizada: Cliente %s, Día %d, Semana %d\n", name,
-               selected_cell->date.day, view->schd.current_week);
+        printf("Reserva realizada: Cliente %s, Día %d, Mes %d\n", name,
+               selected_cell->date.day, view->schd.current_month);
+
+        // Guardar automáticamente
+        save_reservations("reservations.txt", &view->schd);
       } else {
         printf("Error: Límite máximo de reservas alcanzado.\n");
       }
@@ -177,7 +180,6 @@ void view_update(View *view) {
              "disponible.\n");
     }
 
-    // Resetear el botón para que no se repita el evento
     view->btn_send_client_form = 0;
   }
 }

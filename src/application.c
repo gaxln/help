@@ -76,6 +76,7 @@ void _app_draw(App *app) {
 }
 
 void app_close(App *app) {
+  save_reservations("reservations.txt", &app->_view.schd);
   UnloadFont(app->fonts[0]);
   UnloadFont(app->fonts[1]);
   CloseWindow();

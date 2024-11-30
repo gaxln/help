@@ -88,7 +88,6 @@ GENERATED :=
 OBJECTS :=
 
 GENERATED += $(OBJDIR)/application.o
-GENERATED += $(OBJDIR)/client_form.o
 GENERATED += $(OBJDIR)/colors.o
 GENERATED += $(OBJDIR)/controller.o
 GENERATED += $(OBJDIR)/grid.o
@@ -97,7 +96,6 @@ GENERATED += $(OBJDIR)/model.o
 GENERATED += $(OBJDIR)/schedule.o
 GENERATED += $(OBJDIR)/view.o
 OBJECTS += $(OBJDIR)/application.o
-OBJECTS += $(OBJDIR)/client_form.o
 OBJECTS += $(OBJDIR)/colors.o
 OBJECTS += $(OBJDIR)/controller.o
 OBJECTS += $(OBJDIR)/grid.o
@@ -172,9 +170,6 @@ $(OBJDIR)/application.o: src/application.c
 	@echo "$(notdir $<)"
 	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/colors.o: src/colors.c
-	@echo "$(notdir $<)"
-	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/client_form.o: src/components/client_form.c
 	@echo "$(notdir $<)"
 	$(SILENT) $(CC) $(ALL_CFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/grid.o: src/components/grid.c

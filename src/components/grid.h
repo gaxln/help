@@ -15,6 +15,7 @@ typedef struct {
 typedef struct {
   int day;
   int week;
+  int month;
 } Date;
 
 typedef struct {
@@ -38,6 +39,7 @@ typedef struct {
   int day;
   int week;
   Employee employee;
+  int month;
   char *client_name; // Nombre del cliente
   Cell *ref_cell;
 } Reservation;
